@@ -7,6 +7,7 @@ def index(request):
         'blog/pages/index.html'
     )
 
+
 def page(request):
     return render(
         request,
