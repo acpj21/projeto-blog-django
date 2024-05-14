@@ -18,39 +18,39 @@ class MenuLink(models.Model):
 
     def __str__(self):
         return self.text
-    
+
 
 class SiteSetup(models.Model):
-        class Meta:
-            verbose_name = 'Setup'
-            verbose_name_plural = 'Setup'
+    class Meta:
+        verbose_name = 'Setup'
+        verbose_name_plural = 'Setup'
 
-        title = models.CharField(max_length=65)
-        description = models.CharField(max_length=255)
+    title = models.CharField(max_length=65)
+    description = models.CharField(max_length=255)
 
-        show_header = models.BooleanField(default=True)
-        show_search = models.BooleanField(default=True)
-        show_menu = models.BooleanField(default=True)
-        show_description = models.BooleanField(default=True)
-        show_pagination = models.BooleanField(default=True)
-        show_footer = models.BooleanField(default=True)
+    show_header = models.BooleanField(default=True)
+    show_search = models.BooleanField(default=True)
+    show_menu = models.BooleanField(default=True)
+    show_description = models.BooleanField(default=True)
+    show_pagination = models.BooleanField(default=True)
+    show_footer = models.BooleanField(default=True)
 
-        favicon = models.ImageField(
-            upload_to='assets/favicon/%Y/%m/',
-            blank=True, default='',
-            validators=[validate_png],
-        )
-    
-        def save(self, *args, **kwargs):
-            current_favicon_name = str(self.favicon.name)
-            super().save(*args, **kwargs)
-            favicon_changed = False
+    favicon = models.ImageField(
+        upload_to='assets/favicon/%Y/%m/',
+        blank=True, default='',
+        validators=[validate_png],
+    )
 
-            if self.favicon:
-                favicon_changed = current_favicon_name != self.favicon.name
+    def save(self, *args, **kwargs):
+        current_favicon_name = str(self.favicon.name)
+        super().save(*args, **kwargs)
+        favicon_changed = False
 
-            if favicon_changed:
-                resize_image(self.favicon, 32)
+        if self.favicon:
+            favicon_changed = current_favicon_name != self.favicon.name
 
-        def __str__(self):
-            return self.title
+        if favicon_changed:
+            resize_image(self.favicon, 32)
+
+    def __str__(self):
+        return self.title
